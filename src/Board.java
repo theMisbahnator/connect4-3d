@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.Iterator;
+
 /**
  * The Game board that holds the pieces.
  * The structure is a cube with PLANE_SIZE (4) amount of
@@ -67,8 +68,8 @@ public class Board implements CONNECT_CONSTANTS {
      * Gets a square within the Board given
      * a row, col, and height. i.e (x, y, z).
      *
-     * @param row row index for desired square
-     * @param col column index for desired square
+     * @param row    row index for desired square
+     * @param col    column index for desired square
      * @param height height index for desired square
      * @return a square containing either an empty piece,
      * or a square filled by a game piece.
@@ -125,8 +126,8 @@ public class Board implements CONNECT_CONSTANTS {
      * the bard that is available.
      *
      * @param addedPiece piece added to the board
-     * @param row desired row index to add piece
-     * @param col desired col index to add piece
+     * @param row        desired row index to add piece
+     * @param col        desired col index to add piece
      * @return true if the piece add leads to a connect four.
      */
     public boolean addUserPiece(Piece addedPiece, int row, int col) {
@@ -135,7 +136,9 @@ public class Board implements CONNECT_CONSTANTS {
         }
         int height = getOpenSquareHeight(row, col);
         CONNECT_BOARD[height].setSquare(row, col, addedPiece);
-        return isGameDone(row, col, height, addedPiece) || CONNECT_BOARD[height].isGameDone(addedPiece);
+        // checks both the 2-D plane and the valid diagonals in 3-D space
+        return isGameDone(row, col, height, addedPiece) ||
+                CONNECT_BOARD[height].isGameDone(addedPiece);
     }
 
     /**
@@ -145,8 +148,8 @@ public class Board implements CONNECT_CONSTANTS {
      * only examines the valid paths from the previous move
      * versus examining all paths from a given team.
      *
-     * @param row row index from the prev move
-     * @param col column index from the prev move
+     * @param row    row index from the prev move
+     * @param col    column index from the prev move
      * @param height height index from the prev move
      * @param Player the player who made the prev move
      * @return true if the previous move created a connect 4.
@@ -191,19 +194,19 @@ public class Board implements CONNECT_CONSTANTS {
      * Assembles all valid paths needed to traverse through the board in
      * order to find a connect four given a point. A path contains two parts:
      * - The first half of a diagonal from a given point. Uses the normative
-     *   List of path created using the search look up table.
+     * List of path created using the search look up table.
      * - The second half of a diagonal from a given point. Uses the negated
-     *   version of a path that allows a mirrored search from the opposite
-     *   side of a given point.
-     *
+     * version of a path that allows a mirrored search from the opposite
+     * side of a given point.
+     * <p>
      * Each diagonal can range from size 0 to 5, yet given the programs
      * recursive mechanism, the program stops forming a diagonal when
      * the pieces are different from the desired or goes out of bounds.
      * When there is a string of similar pieces that add up to 4, we
      * can determine there is a winner.
      *
-     * @param row row index of prev move
-     * @param col column index of prev move
+     * @param row    row index of prev move
+     * @param col    column index of prev move
      * @param height height index of prev move
      * @param player desired piece type when looking for winner
      * @return true if there is a connection of for in 3-D space.
@@ -218,7 +221,7 @@ public class Board implements CONNECT_CONSTANTS {
             int diagonalOne = inARow(row + path.getRowROC(),
                     col + path.getColROC(), height + path.getHeightROC(), player, path);
             int diagonalTwo = inARow(row, col, height, player, path.getOtherDir());
-        if (diagonalOne + diagonalTwo >= THRESHOLD) {
+            if (diagonalOne + diagonalTwo >= THRESHOLD) {
                 return true;
             }
         }
@@ -231,13 +234,13 @@ public class Board implements CONNECT_CONSTANTS {
      * placed. Direction of iteration is dictated by path object created
      * by the search table.
      *
-     * @param row current row index in recursive call
-     * @param col current column index in recursive call
+     * @param row    current row index in recursive call
+     * @param col    current column index in recursive call
      * @param height current height index in recursive call
      * @param player desired piece being checked for a connection of
      *               similar pieces
-     * @param path the rate of change for row, col, and height dictating
-     *             the movement from a given point in the recursive call.
+     * @param path   the rate of change for row, col, and height dictating
+     *               the movement from a given point in the recursive call.
      * @return an int for every similar piece connected to the last piece placed.
      */
     private int inARow(int row, int col, int height, Piece player, Direction path) {

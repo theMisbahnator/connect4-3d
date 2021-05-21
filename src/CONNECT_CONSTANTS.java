@@ -15,7 +15,4 @@ public interface CONNECT_CONSTANTS {
     // Num in a row needed for a winner (in this case Connect four!)
     public static final int THRESHOLD = 4;
 
-
-
-
 }
