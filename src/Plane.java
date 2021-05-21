@@ -3,15 +3,13 @@ import java.util.ArrayList;
 /**
  * hello
  */
-public class Plane {
-    private static final int SIZE = 5;
-    private static final int LIMIT = 2;
+public class Plane implements CONNECT_CONSTANTS{
     private EmptySquare[][] boardPlane;
 
     public Plane() {
-        boardPlane = new EmptySquare[SIZE][SIZE];
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
+        boardPlane = new EmptySquare[PLANE_SIZE][PLANE_SIZE];
+        for (int i = 0; i < PLANE_SIZE; i++) {
+            for (int j = 0; j < PLANE_SIZE; j++) {
                 boardPlane[i][j] = new EmptySquare();
             }
         }
@@ -32,7 +30,7 @@ public class Plane {
     }
 
     public EmptySquare getSquare(int row, int col) {
-        if (row == SIZE || col == SIZE) {
+        if (row == PLANE_SIZE || col == PLANE_SIZE) {
             throw new IllegalArgumentException("Violation: IOB error accessing pieces on plane.");
         }
         return boardPlane[row][col];
@@ -46,7 +44,7 @@ public class Plane {
         return isGameDone(new Piece(true)) || isGameDone(new Piece(false));
     }
     public boolean isGameDone(Piece player) {
-        return iterateBoard(LIMIT, SIZE, player) || iterateBoard(SIZE, LIMIT, player);
+        return iterateBoard(MID_INDEX, PLANE_SIZE, player) || iterateBoard(PLANE_SIZE, MID_INDEX, player);
     }
 
     public boolean isGameDone(int row, int col, Piece player) {
@@ -82,16 +80,16 @@ public class Plane {
         ArrayList<Direction> dir = new ArrayList<>();
 
         // checks if vertical or horizontal square
-        if (col < LIMIT) {
+        if (col < MID_INDEX) {
             dir.add(new Direction(0, 1));
-        } if (row < LIMIT) {
+        } if (row < MID_INDEX) {
             dir.add(new Direction(1, 0));
         }
 
         // checks if a diagonal square
-        if (row < LIMIT && col >= SIZE - LIMIT) {
+        if (row < MID_INDEX && col >= PLANE_SIZE - MID_INDEX) {
             dir.add(new Direction(1, -1));
-        } else if (row < LIMIT && col < LIMIT) {
+        } else if (row < MID_INDEX && col < MID_INDEX) {
             dir.add(new Direction(1, 1));
         }
 
@@ -122,12 +120,12 @@ public class Plane {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < SIZE; i++) {
+        for (int i = 0; i < PLANE_SIZE; i++) {
             sb.append("[");
-            for (int j = 0; j < SIZE - 1; j++) {
+            for (int j = 0; j < PLANE_SIZE - 1; j++) {
                 sb.append(boardPlane[i][j]).append(" ");
             }
-            sb.append(boardPlane[i][SIZE - 1]).append("]\n");
+            sb.append(boardPlane[i][PLANE_SIZE - 1]).append("]\n");
         }
         return sb.toString();
     }

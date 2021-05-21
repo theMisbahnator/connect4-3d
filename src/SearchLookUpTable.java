@@ -15,6 +15,7 @@ public class SearchLookUpTable implements CONNECT_CONSTANTS{
 
     private ArrayList<Direction> validPaths;
 
+
     public SearchLookUpTable(int row, int col, int height) {
         validPaths = new ArrayList<>();
         if(col < MID_INDEX + height && col >= height) {

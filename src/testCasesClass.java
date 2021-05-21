@@ -2,7 +2,7 @@ public class testCasesClass {
     public static void main(String[] args) {
         // testPlaneClass();
         // testLookUpTable();
-         testBoardClass();
+        // testBoardClass();
     }
 
     private static void testLookUpTable() {
@@ -15,13 +15,44 @@ public class testCasesClass {
 
     private static void testBoardClass() {
         Board b1 = new Board();
-
-        for (int i = 0; i < 4; i++) {
-            System.out.println(b1.addUserPiece(new Piece(true), 1, 1));
-            System.out.println(b1);
-            System.out.println("ADDED: " + (i + 1));
-
+        int testNum = 1;
+        boolean act;
+        for (int i = 0; i < 3; i++) {
+            act = b1.addUserPiece(new Piece(true), 1, 1);
+            testCaseOutput(false, act, testNum++, "Vertical Connect 4, Placing the " + i + "th piece.", b1.toString());
         }
+        act = b1.addUserPiece(new Piece(true), 1, 1);
+        testCaseOutput(true, act, testNum++, "Vertical Connect 4, Placing the " + 4 + "th piece.", b1.toString());
+
+        int[][] Layer0 = {
+                {1, 0, 0, 0, 0},
+                {1, 1, 0, 0, 0},
+                {0, 0, 1, 0, 0},
+                {0, 0, 0, -1, 0},
+                {0, 0, 0, 0, 0},};
+        int[][] Layer1 = {
+                {0, 0, 0, 0, 0},
+                {0, 1, 0, 0, 0},
+                {0, 0, -1, 0, 0},
+                {0, 0, 0, -1, 0},
+                {0, 0, 0, 0, 0},};
+        int[][] Layer2 = {
+                {0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0},
+                {0, 0, 1, 0, 0},
+                {0, 0, 0, -1, 0},
+                {0, 0, 0, 0, 0},};
+        int[][] Layer3 = {
+                {0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0},};
+        b1 = new Board(Layer0, Layer1, Layer2, Layer3);
+        act = b1.isGameDone(new Piece(true));
+        testCaseOutput(false, act, testNum++, "Diagonal Connect 4, The piece before the game is done.", b1.toString());
+        act = b1.addUserPiece(new Piece(true), 3,3);
+        testCaseOutput(true, act, testNum++, "Diagonal Connect 4, Game should be done.", b1.toString());
 
     }
 
