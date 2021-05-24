@@ -74,7 +74,7 @@ public class Board implements CONNECT_CONSTANTS {
      * @return a square containing either an empty piece,
      * or a square filled by a game piece.
      */
-    public EmptySquare getSquare(int row, int col, int height) {
+    public Square getSquare(int row, int col, int height) {
         return CONNECT_BOARD[height].getSquare(row, col);
     }
 
@@ -88,8 +88,8 @@ public class Board implements CONNECT_CONSTANTS {
      * @return a square with the top most piece or null
      * if there are no pieces.
      */
-    public EmptySquare getOpenSquare(int row, int col) {
-        EmptySquare openSquare = null;
+    public Square getOpenSquare(int row, int col) {
+        Square openSquare = null;
         for (Plane e : CONNECT_BOARD) {
             if (!e.getSquare(row, col).isEmpty()) {
                 openSquare = e.getSquare(row, col);
@@ -177,7 +177,7 @@ public class Board implements CONNECT_CONSTANTS {
             // iterates through all squares in plane (25)
             for (int r = 0; r < PLANE_SIZE; r++) {
                 for (int c = 0; c < PLANE_SIZE; c++) {
-                    EmptySquare s = CONNECT_BOARD[i].getSquare(r, c);
+                    Square s = CONNECT_BOARD[i].getSquare(r, c);
                     // only initiates search algorithm on squares with same team
                     if (!s.isEmpty() && s.getTeam() == Player.getTeam()) {
                         if (isGameDone(r, c, i, Player)) {
@@ -249,7 +249,7 @@ public class Board implements CONNECT_CONSTANTS {
                 || height > HEIGHT) {
             return 0;
         }
-        EmptySquare square = CONNECT_BOARD[height].getSquare(row, col);
+        Square square = CONNECT_BOARD[height].getSquare(row, col);
         // base case: current piece in call is different from last piece placed
         if (square.isEmpty() || square.getTeam() != player.getTeam()) {
             return 0;

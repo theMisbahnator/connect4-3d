@@ -2,6 +2,7 @@
  * Given a point on a 3-D cubic plane, this class
  * stores the rate of change that is needed to
  * check for a connect 4 --- (dx, dy, dz).
+ * Additionally, used for 2-D movement.
  * <p>
  * This allows movement from a specific point
  * on a 3-D cubic plane.
@@ -10,11 +11,11 @@ public class Direction {
     // ROC -> rate of change, of (x, y, z) for a particular point
     private final int rowROC;
     private final int colROC;
-    private final int heightROC;
+    private int heightROC;
 
     /**
      * Stores parameters indicating the rate of change
-     * of a row, column, and height.
+     * of a row, column, and height. Used for 3-D movement
      *
      * @param rowROC    the slope at which the row changes
      * @param colROC    the slope at which the column changes
@@ -24,6 +25,17 @@ public class Direction {
         this.rowROC = rowROC;
         this.colROC = colROC;
         this.heightROC = heightROC;
+    }
+
+    /**
+     * Stores parameters indicating the rate of change
+     * or a row and column. Used for 2-D movement.
+     * @param rowROC
+     * @param colROC
+     */
+    public Direction(int rowROC, int colROC) {
+        this.rowROC = rowROC;
+        this.colROC = colROC;
     }
 
     /**
@@ -67,6 +79,21 @@ public class Direction {
      */
     public int getHeightROC() {
         return heightROC;
+    }
+
+    /**
+     * Determines if two directions are equal
+     * comparing row, col and height.
+     *
+     * @return true if two Directions
+     * are equal
+     */
+    public boolean equals(Object other) {
+        if (!(other instanceof Direction)) {
+            return false;
+        }
+        return ((Direction) other).rowROC == rowROC && ((Direction) other).colROC == colROC
+                && ((Direction) other).heightROC == heightROC;
     }
 
     /**
