@@ -1,4 +1,4 @@
-public class Piece extends Square {
+public class Piece extends EmptySquare {
 
     private Player player;
 

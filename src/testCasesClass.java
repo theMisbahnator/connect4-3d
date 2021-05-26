@@ -2,18 +2,21 @@ import java.util.Scanner;
 
 public class testCasesClass implements CONNECT_CONSTANTS {
     public static void main(String[] args) {
-        // testPlaneClass();
-        // testLookUpTable();
-        // testDirection();
-        // testBoardClass();
-        // polymorphism();
+        int num = 0;
+        polymorphism();
+        num += testPlaneClass();
+        num +=  testLookUpTable();
+        num += testDirection();
+        num += testBoardClass();
+        System.out.println("Total test Cases: " + num);
     }
 
     private static void polymorphism() {
         Square s = new Piece(true);
+        s.getTeam();
     }
 
-    private static void testDirection() {
+    private static int testDirection() {
         Direction p = new Direction(0, 0, 0);
         Direction q = null;
         int testNum = 1;
@@ -35,9 +38,11 @@ public class testCasesClass implements CONNECT_CONSTANTS {
             boolean act = i % 2 == 0 ? p.equals(q) : q.equals(p);
             testCaseOutput(false, act, testNum++, "Testing random: unequal", act);
         }
+
+        return testNum;
     }
 
-    private static void testLookUpTable() {
+    private static int testLookUpTable() {
         int testNum = 1;
         SearchLookUpTable t = new SearchLookUpTable();
         t.add(new Direction(1, 3, 4));
@@ -137,6 +142,8 @@ public class testCasesClass implements CONNECT_CONSTANTS {
                         "EXP: " + set + "\nACT: " + act + "\n");
             }
         }
+
+        return testNum;
     }
 
     public static int ThreeDHelper(int rowL, int colL, int layerL, int[] dir, String desc, int testNum, int rowAdjust, int colAdjust) {
@@ -153,7 +160,7 @@ public class testCasesClass implements CONNECT_CONSTANTS {
         return testNum;
     }
 
-    private static void testBoardClass() {
+    private static int testBoardClass() {
         Board b1 = new Board();
         int testNum = 1;
         boolean act;
@@ -194,9 +201,10 @@ public class testCasesClass implements CONNECT_CONSTANTS {
         act = b1.addUserPiece(new Piece(true), 3, 3);
         testCaseOutput(true, act, testNum++, "Diagonal Connect 4, Game should be done.", b1.toString());
 
+        return testNum;
     }
 
-    private static void testPlaneClass() {
+    private static int testPlaneClass() {
         Plane ps = new Plane();
         String output = ps.toString();
         int testNum = 1;
@@ -350,6 +358,7 @@ public class testCasesClass implements CONNECT_CONSTANTS {
             }
             testCaseOutput(true, ps.isGameDone(new Piece(true)), testNum++, "Testing col " + i, ps.toString());
         }
+        return testNum;
     }
 
     public static void testCaseOutput(boolean exp, boolean act, int testNum, String Description, Object output) {
