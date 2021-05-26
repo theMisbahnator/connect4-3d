@@ -3,9 +3,14 @@ import java.util.Scanner;
 public class testCasesClass implements CONNECT_CONSTANTS {
     public static void main(String[] args) {
         // testPlaneClass();
-        testLookUpTable();
+        // testLookUpTable();
         // testDirection();
         // testBoardClass();
+        // polymorphism();
+    }
+
+    private static void polymorphism() {
+        Square s = new Piece(true);
     }
 
     private static void testDirection() {

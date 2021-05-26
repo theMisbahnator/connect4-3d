@@ -11,5 +11,4 @@ public class EmptySquare extends Square{
     public String toString() {
         return ".";
     }
-
 }
