@@ -59,7 +59,7 @@ public class SearchLookUpTable implements CONNECT_CONSTANTS{
     }
 
     public boolean contains(Object set) {
-        if (!(set instanceof SearchLookUpTable)) {
+        if (!(set instanceof Direction)) {
             return false;
         }
         for (Direction s : validPaths) {

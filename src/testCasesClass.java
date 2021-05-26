@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class testCasesClass {
+public class testCasesClass implements CONNECT_CONSTANTS {
     public static void main(String[] args) {
         // testPlaneClass();
         testLookUpTable();
@@ -35,22 +35,117 @@ public class testCasesClass {
     private static void testLookUpTable() {
         int testNum = 1;
         SearchLookUpTable t = new SearchLookUpTable();
-        t.add(new Direction(1,3,4));
+        t.add(new Direction(1, 3, 4));
         Direction s = new Direction(1, 3, 4);
         boolean p = t.contains(s);
-        testCaseOutput(true, p, testNum, "Testing contains", t.toString());
+        testCaseOutput(true, p, testNum++, "Testing contains", t.toString());
 
 
-        for (int i = 0; i < CONNECT_CONSTANTS.MID_INDEX; i++) {
-            for (int j = 0; j < CONNECT_CONSTANTS.PLANE_SIZE; j++) {
-                Direction set = new Direction(0, 1, 1);
-                SearchLookUpTable act = new SearchLookUpTable(j, i, 0);
-                boolean result = act.contains(set);
-                testCaseOutput(true, result, testNum++, "First Layer, Left Half", "Row: " + j + ", " +
-                        "Col: " + i + "\nEXP: " + "\nACT: " + act + "\n");
+        t.add(new Direction(1, 4, 7));
+        s = new Direction(1, 3, 8);
+        p = t.contains(s);
+        testCaseOutput(false, p, testNum++, "Testing contains", t.toString());
+
+
+        // testing left upper diagonal --- {0, 1, 1}
+        testNum = ThreeDHelper(PLANE_SIZE, MID_INDEX, HEIGHT, new int[]{0, 1, 1}, "-> + up slope", testNum, 0, 1);
+
+        // testing down upper diagonal --- {1, 0, 1}
+        testNum = ThreeDHelper(MID_INDEX, PLANE_SIZE, HEIGHT, new int[]{1, 0, 1}, "down + up slope", testNum, 1, 0);
+
+
+        // testing left upper diagonal --- {0, -1, 1}
+        for (int layer = 0; layer <= HEIGHT; layer++) {
+            for (int col = PLANE_SIZE - 1; col > CONNECT_CONSTANTS.MID_INDEX; col--) {
+                for (int row = 0; row < PLANE_SIZE; row++) {
+                    Direction set = new Direction(0, -1, 1);
+                    SearchLookUpTable act = new SearchLookUpTable(row, col - layer, layer);
+                    boolean result = act.contains(set);
+                    testCaseOutput(true, result, testNum++, "<- + up slope (" + row + ", " + col + ", " + layer + ")",
+                            "EXP: " + set + "\nACT: " + act + "\n");
+                }
             }
         }
 
+        // testing left upper diagonal --- {-1, 0, 1}
+        for (int layer = 0; layer <= HEIGHT; layer++) {
+            for (int col = 0; col < PLANE_SIZE; col++) {
+                for (int row = PLANE_SIZE - 1; row > CONNECT_CONSTANTS.MID_INDEX; row--) {
+                    Direction set = new Direction(-1, 0, 1);
+                    SearchLookUpTable act = new SearchLookUpTable(row - layer, col, layer);
+                    boolean result = act.contains(set);
+                    testCaseOutput(true, result, testNum++, "up + up slope (" + row + ", " + col + ", " + layer + ")",
+                            "EXP: " + set + "\nACT: " + act + "\n");
+                }
+            }
+        }
+
+        // -> + down + up slope --- {1, 1, 1}
+        testNum = ThreeDHelper(MID_INDEX, MID_INDEX, HEIGHT, new int[]{1, 1, 1}, "-> + down + up slope", testNum, 1, 1);
+
+        // -> + up + up slope --- {-1, 1, 1}
+        for (int layer = 0; layer <= HEIGHT; layer++) {
+            for (int col = 0; col < MID_INDEX; col++) {
+                for (int row = PLANE_SIZE - 1; row > CONNECT_CONSTANTS.MID_INDEX; row--) {
+                    Direction set = new Direction(-1, 1, 1);
+                    SearchLookUpTable act = new SearchLookUpTable(row - layer, col + layer, layer);
+                    boolean result = act.contains(set);
+                    testCaseOutput(true, result, testNum++, "-> + up + up slope (" + row + ", " + col + ", " + layer + ")",
+                            "EXP: " + set + "\nACT: " + act + "\n");
+                }
+            }
+        }
+
+        // <- + up + up slope --- {-1, -1, 1}
+        for (int layer = 0; layer <= HEIGHT; layer++) {
+            for (int col = PLANE_SIZE - 1; col > MID_INDEX; col--) {
+                for (int row = PLANE_SIZE - 1; row > MID_INDEX; row--) {
+                    Direction set = new Direction(-1, -1, 1);
+                    SearchLookUpTable act = new SearchLookUpTable(row - layer, col - layer, layer);
+                    boolean result = act.contains(set);
+                    testCaseOutput(true, result, testNum++, "<- + up + up slope (" + row + ", " + col + ", " + layer + ")",
+                            "EXP: " + set + "\nACT: " + act + "\n");
+                }
+            }
+        }
+
+        // <- + down + up slope --- {1, -1, 1}
+        for (int layer = 0; layer <= HEIGHT; layer++) {
+            for (int col = PLANE_SIZE - 1; col > MID_INDEX; col--) {
+                for (int row = 0; row < MID_INDEX; row++) {
+                    Direction set = new Direction(1, -1, 1);
+                    SearchLookUpTable act = new SearchLookUpTable(row + layer, col - layer, layer);
+                    boolean result = act.contains(set);
+                    testCaseOutput(true, result, testNum++, "<- + down + up slope (" + row + ", " + col + ", " + layer + ")",
+                            "EXP: " + set + "\nACT: " + act + "\n");
+                }
+            }
+        }
+
+        // vertical check
+        for (int row = 0; row < PLANE_SIZE; row++) {
+            for (int col = 0; col < PLANE_SIZE; col++) {
+                Direction set = new Direction(0, 0, -1);
+                SearchLookUpTable act = new SearchLookUpTable(row, col, HEIGHT);
+                boolean result = act.contains(set);
+                testCaseOutput(true, result, testNum++, "Top Level (" + row + ", " + col + ", " + 3 + ")",
+                        "EXP: " + set + "\nACT: " + act + "\n");
+            }
+        }
+    }
+
+    public static int ThreeDHelper(int rowL, int colL, int layerL, int[] dir, String desc, int testNum, int rowAdjust, int colAdjust) {
+        for (int layer = 0; layer <= layerL; layer++) {
+            for (int col = 0; col < colL; col++) {
+                for (int row = 0; row < rowL; row++) {
+                    Direction set = new Direction(dir[0], dir[1], dir[2]);
+                    SearchLookUpTable act = new SearchLookUpTable(row + layer * rowAdjust, col + layer * colAdjust, layer);
+                    boolean result = act.contains(set);
+                    testCaseOutput(true, result, testNum++, desc + " (" + row + ", " + col + ", " + layer + ")", "EXP: " + set + "\nACT: " + act + "\n");
+                }
+            }
+        }
+        return testNum;
     }
 
     private static void testBoardClass() {
