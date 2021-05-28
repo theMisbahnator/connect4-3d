@@ -30,8 +30,8 @@ public class Direction {
     /**
      * Stores parameters indicating the rate of change
      * or a row and column. Used for 2-D movement.
-     * @param rowROC
-     * @param colROC
+     * @param rowROC the slope at which the row changes
+     * @param colROC the slope at which the column changes
      */
     public Direction(int rowROC, int colROC) {
         this.rowROC = rowROC;

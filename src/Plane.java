@@ -24,7 +24,7 @@ public class Plane implements CONNECT_CONSTANTS{
 
     /**
      * FOR TESTING PURPOSES ONLY: Given an
-     * already modified int[] board, the costructor
+     * already modified int[] board, the constructor
      * creates a corresponding game board.
      * 1 --- Player One
      * -1 --- player Two
@@ -152,32 +152,6 @@ public class Plane implements CONNECT_CONSTANTS{
         return false;
     }
 
-//    /**
-//     * Provides range of motion on
-//     * a 2-D plane. Used to iterate over
-//     * the board and check for a connect four.
-//     */
-//    private static class Direction {
-//        private final int xDirection;
-//        private final int yDirection;
-//
-//        /**
-//         * Stores rate of change for a
-//         * row and column from a point.
-//         *
-//         * @param x rate of change for row
-//         * @param y rate of change for col
-//         */
-//        Direction (int x, int y) {
-//            xDirection = x;
-//            yDirection = y;
-//        }
-//        public String toString() {
-//            return ("(dx, dy): " + "(" + xDirection +
-//                    ", " + yDirection + ")");
-//        }
-//    }
-
     /**
      * Assembles a list of directions from a
      * given point to traverse in in order to
@@ -234,7 +208,7 @@ public class Plane implements CONNECT_CONSTANTS{
         row += set.getRowROC();
         col += set.getColROC();
         // must be 3 in a row of same piece, otherwise game isn't done
-        while(doneSearch < 3) {
+        while(doneSearch < THRESHOLD - 1) {
             if (!boardPlane[row][col].isEmpty() &&
                     boardPlane[row][col].getTeam() == player.getTeam()) {
                 row += set.getRowROC();
@@ -250,7 +224,7 @@ public class Plane implements CONNECT_CONSTANTS{
     /**
      * Prints out the 2-D plane.
      *
-     * @return a string represnting the current
+     * @return a string representing the current
      * game board.
      */
     public String toString() {
