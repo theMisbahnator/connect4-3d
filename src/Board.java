@@ -218,9 +218,9 @@ public class Board implements CONNECT_CONSTANTS {
         while (paths.hasNext()) {
             Direction path = paths.next();
             // since prev point already counts, iterate over that
-            int diagonalOne = inARow(row + path.getRowROC(),
-                    col + path.getColROC(), height + path.getHeightROC(), player, path);
-            int diagonalTwo = inARow(row, col, height, player, path.getOtherDir());
+            int diagonalOne = inARow(row + path.getRowROC(), col + path.getColROC(),
+                    height + path.getHeightROC(), player, path, THRESHOLD);
+            int diagonalTwo = inARow(row, col, height, player, path.getOtherDir(), THRESHOLD);
             if (diagonalOne + diagonalTwo >= THRESHOLD) {
                 return true;
             }
@@ -241,9 +241,10 @@ public class Board implements CONNECT_CONSTANTS {
      *               similar pieces
      * @param path   the rate of change for row, col, and height dictating
      *               the movement from a given point in the recursive call.
+     * @param depth  How many in a row needed to win.
      * @return an int for every similar piece connected to the last piece placed.
      */
-    private int inARow(int row, int col, int height, Piece player, Direction path) {
+    private int inARow(int row, int col, int height, Piece player, Direction path, int depth) {
         // base case: piece goes out of bounds
         if (row < 0 || col < 0 || height < 0 || row >= PLANE_SIZE || col >= PLANE_SIZE
                 || height > HEIGHT) {
@@ -251,12 +252,12 @@ public class Board implements CONNECT_CONSTANTS {
         }
         Square square = CONNECT_BOARD[height].getSquare(row, col);
         // base case: current piece in call is different from last piece placed
-        if (square.isEmpty() || square.getTeam() != player.getTeam()) {
+        if (square.isEmpty() || square.getTeam() != player.getTeam() || depth == 0) {
             return 0;
         }
         // piece is the same type as the desired piece and is connected, continue 3-D iteration
         return 1 + inARow(row + path.getRowROC(), col + path.getColROC(),
-                height + path.getHeightROC(), player, path);
+                height + path.getHeightROC(), player, path, depth - 1);
     }
 
     /**
