@@ -252,6 +252,7 @@ public class Board implements CONNECT_CONSTANTS {
         }
         Square square = CONNECT_BOARD[height].getSquare(row, col);
         // base case: current piece in call is different from last piece placed
+        // OR the threshold has been reached
         if (square.isEmpty() || square.getTeam() != player.getTeam() || depth == 0) {
             return 0;
         }
