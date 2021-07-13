@@ -1,4 +1,7 @@
 import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Material;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Cylinder;
 
 public class Piece extends Square {
@@ -37,10 +40,18 @@ public class Piece extends Square {
 
     public void activatePiece(boolean team) {
         player = new Player(team);
-        Cylinder c = new Cylinder(40, 20, 10);
-        group.getChildren().add(c);
-        c.translateXProperty().set(x * 30 + 200);
-        c.translateYProperty().set(y * 30 + 200);
+        Cylinder piece = new Cylinder(40, 20);
+        PhongMaterial material = new PhongMaterial();
+        if (team) {
+            material.setDiffuseColor(Color.AQUA);
+        } else {
+            material.setDiffuseColor(Color.BEIGE);
+        }
+        piece.setMaterial(material);
+        group.getChildren().add(piece);
+        piece.translateXProperty().set(x * 100);
+        piece.translateYProperty().set(y * 100);
+        piece.translateZProperty().set(0);
     }
 
     public boolean isEmpty() {
