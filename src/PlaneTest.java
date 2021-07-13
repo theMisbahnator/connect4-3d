@@ -79,7 +79,7 @@ class PlaneTest {
                 // for empty squares, 1 if the row is even, -1 if the row is odd
                 int val = beforeArr[r][c] == 0 ? r % 2 == 0 ? 1 : -1 :
                         beforeArr[r][c] == 1 ? -1 : 1;
-                before.setSquare(r, c, new Piece(1 == val));
+                before.setSquare(r, c, 1 == val);
                 ts.add(Arguments.of(r, c, before.getSquare(r,c).getTeam()));
             }
         }
@@ -88,10 +88,13 @@ class PlaneTest {
 
     @ParameterizedTest
     @MethodSource("isDone")
-    void isGameDone() {
+    void isGameDone(Plane p, boolean exp) {
         // should be passed an argument stream containing the parameters
         // - a plane board
         // - an exp boolean indicating weather the game is done
+
+        assertEquals(p.isGameDone(), exp);
+
     }
 
     private static Stream<Arguments> isDone() {
@@ -110,7 +113,7 @@ class PlaneTest {
                 // for empty squares, 1 if the row is even, -1 if the row is odd
                 int val = beforeArr[r][c] == 0 ? r % 2 == 0 ? 1 : -1 :
                         beforeArr[r][c] == 1 ? -1 : 1;
-                before.setSquare(r, c, new Piece(1 == val));
+                before.setSquare(r, c, 1 == val);
                 ts.add(Arguments.of(r, c, before.getSquare(r,c).getTeam()));
             }
         }

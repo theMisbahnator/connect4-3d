@@ -1,3 +1,4 @@
+import javafx.scene.Group;
 import java.util.ArrayList;
 
 /**
@@ -7,17 +8,28 @@ import java.util.ArrayList;
  */
 public class Plane implements CONNECT_CONSTANTS{
 
-    private Square[][] boardPlane;
+    private Piece[][] boardPlane;
+    private int height;
 
     /**
      * Creates an empty 2-D plane with dimensions
      * of 5 by 5 filled with EmptySquares.
      */
     public Plane() {
-        boardPlane = new EmptySquare[PLANE_SIZE][PLANE_SIZE];
+        boardPlane = new Piece[PLANE_SIZE][PLANE_SIZE];
         for (int i = 0; i < PLANE_SIZE; i++) {
             for (int j = 0; j < PLANE_SIZE; j++) {
-                boardPlane[i][j] = new EmptySquare();
+                boardPlane[i][j] = new Piece();
+            }
+        }
+    }
+
+    public Plane(Group g, int height) {
+        this.height = height;
+        boardPlane = new Piece[PLANE_SIZE][PLANE_SIZE];
+        for (int i = 0; i < PLANE_SIZE; i++) {
+            for (int j = 0; j < PLANE_SIZE; j++) {
+                boardPlane[i][j] = new Piece(true, g, j, i);
             }
         }
     }
@@ -34,15 +46,15 @@ public class Plane implements CONNECT_CONSTANTS{
      *               board.
      */
     public Plane(int[][] square) {
-        boardPlane = new EmptySquare[square.length][square[0].length];
+        boardPlane = new Piece[square.length][square[0].length];
         for (int i = 0; i < square.length; i++) {
             for (int j = 0; j < square.length; j++) {
-                boardPlane[i][j] = new EmptySquare();
+                boardPlane[i][j] = new Piece();
                 // if 1 or -1, create a player piece
                 if (square[i][j] == 1) {
-                    boardPlane[i][j] = new Piece(true);
+                    // boardPlane[i][j] = new Piece(true, i * 30, j * 30);
                 } else if (square[i][j] == -1) {
-                    boardPlane[i][j] = new Piece(false);
+                    // boardPlane[i][j] = new Piece(false, i * 30, j * 30);
                 }
             }
         }
@@ -74,15 +86,15 @@ public class Plane implements CONNECT_CONSTANTS{
      *
      * @param row the row index
      * @param col the col index
-     * @param p the desired piece for a
+     * @param team the desired piece for a
      *           piece to be changed to
      */
-    public void setSquare(int row, int col, Square p) {
-        if (p == null || row < 0 || col < 0 || row >= PLANE_SIZE || col >= PLANE_SIZE) {
+    public void setSquare(int row, int col, boolean team) {
+        if (row < 0 || col < 0 || row >= PLANE_SIZE || col >= PLANE_SIZE) {
             throw new IllegalArgumentException("Violation: SetSquare(), p is null " +
                     "or row/col are invalid.");
         }
-        boardPlane[row][col] = p;
+        boardPlane[row][col].activatePiece(team);
     }
 
     /**
@@ -92,7 +104,7 @@ public class Plane implements CONNECT_CONSTANTS{
      * @return true if there is a connect for of any type
      */
     public boolean isGameDone() {
-        return isGameDone(new Piece(true)) || isGameDone(new Piece(false));
+        return isGameDone(true) || isGameDone(false);
     }
 
     /**
@@ -105,7 +117,7 @@ public class Plane implements CONNECT_CONSTANTS{
      * @return true if there is a connect four from a
      * given piece type.
      */
-    public boolean isGameDone(Piece player) {
+    public boolean isGameDone(boolean player) {
         return iterateBoard(MID_INDEX, PLANE_SIZE, player) || iterateBoard(PLANE_SIZE, MID_INDEX, player);
     }
 
@@ -123,7 +135,7 @@ public class Plane implements CONNECT_CONSTANTS{
      * @return true if there is a connection of four
      * from a given piece.
      */
-    public boolean isGameDone(int row, int col, Piece player) {
+    public boolean isGameDone(int row, int col, boolean player) {
         return checkConnect4(row, col, player);
     }
 
@@ -138,11 +150,11 @@ public class Plane implements CONNECT_CONSTANTS{
      *               connect four.
      * @return true if there is a connect four.
      */
-    public boolean iterateBoard(int rowLimit, int colLimit, Piece player) {
+    public boolean iterateBoard(int rowLimit, int colLimit, boolean player) {
         for (int i = 0; i < rowLimit; i++) {
             for (int j = 0; j < colLimit; j++) {
                 if (!boardPlane[i][j].isEmpty() &&
-                        boardPlane[i][j].getTeam() == player.getTeam()) {
+                        boardPlane[i][j].getTeam() == player) {
                     if (checkConnect4(i, j, player)) {
                         return true;
                     }
@@ -163,7 +175,7 @@ public class Plane implements CONNECT_CONSTANTS{
      *               check for a connect four.
      * @return true if there is a connect four.
      */
-    private boolean checkConnect4(int row, int col, Piece player) {
+    private boolean checkConnect4(int row, int col, boolean player) {
         ArrayList<Direction> dir = new ArrayList<>();
 
         // checks if vertical or horizontal square
@@ -202,7 +214,7 @@ public class Plane implements CONNECT_CONSTANTS{
      * @return true if there is a connect four from
      * current path.
      */
-    private boolean checkDirForFour(int row, int col, Direction set, Piece player) {
+    private boolean checkDirForFour(int row, int col, Direction set, boolean player) {
         int doneSearch = 0;
         // iterates over already identified piece
         row += set.getRowROC();
@@ -210,7 +222,7 @@ public class Plane implements CONNECT_CONSTANTS{
         // must be 3 in a row of same piece, otherwise game isn't done
         while(doneSearch < THRESHOLD - 1) {
             if (!boardPlane[row][col].isEmpty() &&
-                    boardPlane[row][col].getTeam() == player.getTeam()) {
+                    boardPlane[row][col].getTeam() == player) {
                 row += set.getRowROC();
                 col += set.getColROC();
             } else {

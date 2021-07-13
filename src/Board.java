@@ -1,3 +1,5 @@
+import javafx.scene.Group;
+
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -20,6 +22,13 @@ public class Board implements CONNECT_CONSTANTS {
         CONNECT_BOARD = new Plane[HEIGHT + 1];
         for (int i = 0; i <= HEIGHT; i++) {
             CONNECT_BOARD[i] = new Plane();
+        }
+    }
+
+    public Board(Group g) {
+        CONNECT_BOARD = new Plane[HEIGHT + 1];
+        for (int i = 0; i <= HEIGHT; i++) {
+            CONNECT_BOARD[i] = new Plane(g, i);
         }
     }
 
@@ -130,7 +139,7 @@ public class Board implements CONNECT_CONSTANTS {
      * @param col        desired col index to add piece
      * @return true if the piece add leads to a connect four.
      */
-    public boolean addUserPiece(Piece addedPiece, int row, int col) {
+    public boolean addUserPiece(boolean addedPiece, int row, int col) {
         if (!isSquareAvailable(row, col)) {
             throw new IllegalStateException("Square already taken.");
         }
@@ -154,7 +163,7 @@ public class Board implements CONNECT_CONSTANTS {
      * @param Player the player who made the prev move
      * @return true if the previous move created a connect 4.
      */
-    public boolean isGameDone(int row, int col, int height, Piece Player) {
+    public boolean isGameDone(int row, int col, int height, boolean Player) {
         // checks both the 2-D plane and the valid diagonals in 3-D space
         return CONNECT_BOARD[height].isGameDone(Player) ||
                 checkMultiDimensions(row, col, height, Player);
@@ -172,14 +181,14 @@ public class Board implements CONNECT_CONSTANTS {
      *               connect four.
      * @return true if the previous move created a connect 4.
      */
-    public boolean isGameDone(Piece Player) {
+    public boolean isGameDone(boolean Player) {
         for (int i = 0; i < CONNECT_BOARD.length; i++) {
             // iterates through all squares in plane (25)
             for (int r = 0; r < PLANE_SIZE; r++) {
                 for (int c = 0; c < PLANE_SIZE; c++) {
                     Square s = CONNECT_BOARD[i].getSquare(r, c);
                     // only initiates search algorithm on squares with same team
-                    if (!s.isEmpty() && s.getTeam() == Player.getTeam()) {
+                    if (!s.isEmpty() && s.getTeam() == Player) {
                         if (isGameDone(r, c, i, Player)) {
                             return true;
                         }
@@ -211,7 +220,7 @@ public class Board implements CONNECT_CONSTANTS {
      * @param player desired piece type when looking for winner
      * @return true if there is a connection of for in 3-D space.
      */
-    private boolean checkMultiDimensions(int row, int col, int height, Piece player) {
+    private boolean checkMultiDimensions(int row, int col, int height, boolean player) {
         // contains all valid search paths for a given point (x, y, z)
         SearchLookUpTable validPaths = new SearchLookUpTable(row, col, height);
         Iterator<Direction> paths = validPaths.iterator();
@@ -244,7 +253,7 @@ public class Board implements CONNECT_CONSTANTS {
      * @param depth  How many in a row needed to win.
      * @return an int for every similar piece connected to the last piece placed.
      */
-    private int inARow(int row, int col, int height, Piece player, Direction path, int depth) {
+    private int inARow(int row, int col, int height, boolean player, Direction path, int depth) {
         // base case: piece goes out of bounds
         if (row < 0 || col < 0 || height < 0 || row >= PLANE_SIZE || col >= PLANE_SIZE
                 || height > HEIGHT) {
@@ -253,7 +262,7 @@ public class Board implements CONNECT_CONSTANTS {
         Square square = CONNECT_BOARD[height].getSquare(row, col);
         // base case: current piece in call is different from last piece placed
         // OR the threshold has been reached
-        if (square.isEmpty() || square.getTeam() != player.getTeam() || depth == 0) {
+        if (square.isEmpty() || square.getTeam() != player || depth == 0) {
             return 0;
         }
         // piece is the same type as the desired piece and is connected, continue 3-D iteration
