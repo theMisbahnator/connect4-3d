@@ -1,4 +1,6 @@
+import javafx.geometry.Point3D;
 import javafx.scene.Group;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Material;
 import javafx.scene.paint.PhongMaterial;
@@ -40,18 +42,20 @@ public class Piece extends Square {
 
     public void activatePiece(boolean team) {
         player = new Player(team);
-        Cylinder piece = new Cylinder(40, 20);
+        Cylinder piece = new Cylinder(50, 30);
         PhongMaterial material = new PhongMaterial();
         if (team) {
-            material.setDiffuseColor(Color.AQUA);
+            material.setDiffuseMap(new Image(getClass().getResourceAsStream("amogus.jpg")));
         } else {
-            material.setDiffuseColor(Color.BEIGE);
+            material.setDiffuseMap(new Image(getClass().getResourceAsStream("blue.jpg")));
         }
         piece.setMaterial(material);
         group.getChildren().add(piece);
-        piece.translateXProperty().set(x * 100);
-        piece.translateYProperty().set(y * 100);
-        piece.translateZProperty().set(0);
+        piece.translateXProperty().set(x * 140);
+        piece.translateYProperty().set(y * 140);
+        piece.translateZProperty().set(20);
+        piece.rotationAxisProperty().set(new Point3D(1,0,0));
+        piece.rotateProperty().set(90);
     }
 
     public boolean isEmpty() {

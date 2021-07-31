@@ -1,49 +1,65 @@
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point3D;
 import javafx.scene.*;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Cylinder;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Sphere;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
+import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
+
 import java.util.Scanner;
 
 import static java.awt.image.ImageObserver.WIDTH;
 
-public class mainGame extends Application {
+public class mainGame extends Application implements CONNECT_CONSTANTS {
 
     private static final int WIDTH = 1400;
     private static final int HEIGHT = 800;
 
     public void start(Stage primaryStage) throws Exception {
-        // adds sphere
-        Sphere sphere = new Sphere(50);
         Group group = new Group();
-        group.getChildren().add(sphere);
+        Group root = new Group();
+        root.getChildren().addAll(prepareBackground(), group);
 
-        Box base = new Box(30,30,5);
-        group.getChildren().add(base);
-        base.translateXProperty().set(500);
-        base.translateYProperty().set(500);
+        /*
+        ways to place peices in 3-D space
+        - have poles sticking out from each square, clicking on the pole allows a peice to appear
+        -
+         */
 
         Board b = new Board(group);
 
         // background
-        Camera camera = new PerspectiveCamera(true);
-        Scene scene = new Scene(group, WIDTH, HEIGHT);
-        scene.setFill(Color.BLANCHEDALMOND);
+        PerspectiveCamera camera = new PerspectiveCamera();
+        Scene scene = new Scene(root, WIDTH, HEIGHT);
+        scene.setFill(Color.BLACK);
         scene.setCamera(camera);
 
         b.addUserPiece(true, 0, 0);
+        b.addUserPiece(false, 1,1);
 
-        camera.translateXProperty().set(0);
-        camera.translateYProperty().set(0);
-        camera.translateZProperty().set(-700);
+
+        camera.setVerticalFieldOfView(false);
+
+        camera.translateXProperty().set(-700);
+        camera.translateYProperty().set(-400);
+        camera.translateZProperty().set(-1500);
+
+        // camera.setFieldOfView(30);
         camera.setNearClip(1);
-        camera.setFarClip(1000);
+        camera.setFarClip(10000);
 
 //        BorderPane root = new BorderPane();
 //        Scene scene = new Scene(root, 800, 800, true);
@@ -60,9 +76,45 @@ public class mainGame extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        zoomFunction(primaryStage, group);
+        rotateBoard(primaryStage, group);
 //
 //        final PerspectiveCamera camera = new PerspectiveCamera(true);
 
+    }
+
+    public void zoomFunction(Stage stage, Group group) {
+        stage.addEventHandler(ScrollEvent.SCROLL, event -> {
+            double scrollMovement = event.getDeltaY();
+            System.out.println(group.getTranslateZ() + scrollMovement);
+            group.translateZProperty().set(group.getTranslateZ() + scrollMovement);
+        });
+    }
+
+    public void rotateBoard(Stage stage, Group group) {
+        // sets base rotation
+        group.rotationAxisProperty().set(new Point3D(1,0,0));
+        group.rotateProperty().set(140);
+
+        stage.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            System.out.println(mouseEvent.getX());
+            System.out.println(mouseEvent.getY());
+        });
+
+        stage.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
+            double mouseYMovement = event.getY();
+            double mouseXMovement = event.getX();
+            group.rotationAxisProperty().set(new Point3D(1,0,0));
+            group.rotateProperty().set(-mouseXMovement);
+        });
+    }
+
+    public ImageView prepareBackground () {
+        Image photo = new Image(getClass().getResourceAsStream("backround.jpg"),
+                2.5 * WIDTH, 2.5 *  HEIGHT, false, false);
+        ImageView image = new ImageView(photo);
+        image.getTransforms().add(new Translate(-photo.getWidth()/2, -photo.getHeight()/2, 800));
+        return image;
     }
 
     public static void main(String[] args) {

@@ -29,6 +29,9 @@ public class Plane implements CONNECT_CONSTANTS{
         boardPlane = new Piece[PLANE_SIZE][PLANE_SIZE];
         for (int i = 0; i < PLANE_SIZE; i++) {
             for (int j = 0; j < PLANE_SIZE; j++) {
+                if(height == 0) {
+                    BoardSquare sqr = new BoardSquare(g, i, j);
+                }
                 boardPlane[i][j] = new Piece(g, height, j, i);
             }
         }

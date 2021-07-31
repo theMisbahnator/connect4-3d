@@ -3,6 +3,14 @@ import javafx.scene.Group;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import javafx.geometry.Point3D;
+import javafx.scene.Group;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Material;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Cylinder;
+
 /**
  * The Game board that holds the pieces.
  * The structure is a cube with PLANE_SIZE (4) amount of
