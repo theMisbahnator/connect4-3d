@@ -1,4 +1,6 @@
 import javafx.scene.Group;
+import javafx.stage.Stage;
+
 import java.util.ArrayList;
 
 /**
@@ -24,15 +26,15 @@ public class Plane implements CONNECT_CONSTANTS{
         }
     }
 
-    public Plane(Group g, int height) {
+    public Plane(Stage stage, Group board, Group piece, int height) {
         this.height = height;
         boardPlane = new Piece[PLANE_SIZE][PLANE_SIZE];
         for (int i = 0; i < PLANE_SIZE; i++) {
             for (int j = 0; j < PLANE_SIZE; j++) {
                 if(height == 0) {
-                    BoardSquare sqr = new BoardSquare(g, i, j);
+                    BoardSquare sqr = new BoardSquare(stage, board, i, j);
                 }
-                boardPlane[i][j] = new Piece(g, height, j, i);
+                boardPlane[i][j] = new Piece(piece, height, j, i);
             }
         }
     }

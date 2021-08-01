@@ -45,15 +45,15 @@ public class Piece extends Square {
         Cylinder piece = new Cylinder(50, 30);
         PhongMaterial material = new PhongMaterial();
         if (team) {
-            material.setDiffuseMap(new Image(getClass().getResourceAsStream("amogus.jpg")));
+            material.setDiffuseMap(new Image(getClass().getResourceAsStream("/photos/amogus.jpg")));
         } else {
-            material.setDiffuseMap(new Image(getClass().getResourceAsStream("blue.jpg")));
+            material.setDiffuseMap(new Image(getClass().getResourceAsStream("/photos/blue.jpg")));
         }
         piece.setMaterial(material);
         group.getChildren().add(piece);
         piece.translateXProperty().set(x * 140);
         piece.translateYProperty().set(y * 140);
-        piece.translateZProperty().set(20);
+        piece.translateZProperty().set(30);
         piece.rotationAxisProperty().set(new Point3D(1,0,0));
         piece.rotateProperty().set(90);
     }

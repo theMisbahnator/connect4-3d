@@ -29,9 +29,10 @@ public class mainGame extends Application implements CONNECT_CONSTANTS {
     private static final int HEIGHT = 800;
 
     public void start(Stage primaryStage) throws Exception {
-        Group group = new Group();
-        Group root = new Group();
-        root.getChildren().addAll(prepareBackground(), group);
+        Group boardGroup = new Group();
+        Group pieceGroup = new Group();
+        Group allGroups = new Group();
+        allGroups.getChildren().addAll(prepareBackground(), boardGroup, pieceGroup);
 
         /*
         ways to place peices in 3-D space
@@ -39,11 +40,11 @@ public class mainGame extends Application implements CONNECT_CONSTANTS {
         -
          */
 
-        Board b = new Board(group);
+        Board b = new Board(primaryStage, boardGroup, pieceGroup);
 
         // background
         PerspectiveCamera camera = new PerspectiveCamera();
-        Scene scene = new Scene(root, WIDTH, HEIGHT);
+        Scene scene = new Scene(allGroups, WIDTH, HEIGHT);
         scene.setFill(Color.BLACK);
         scene.setCamera(camera);
 
@@ -76,8 +77,10 @@ public class mainGame extends Application implements CONNECT_CONSTANTS {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        zoomFunction(primaryStage, group);
-        rotateBoard(primaryStage, group);
+        zoomFunction(primaryStage, boardGroup);
+        zoomFunction(primaryStage, pieceGroup);
+        rotateBoard(primaryStage, boardGroup);
+        rotateBoard(primaryStage, pieceGroup);
 //
 //        final PerspectiveCamera camera = new PerspectiveCamera(true);
 
@@ -110,7 +113,7 @@ public class mainGame extends Application implements CONNECT_CONSTANTS {
     }
 
     public ImageView prepareBackground () {
-        Image photo = new Image(getClass().getResourceAsStream("backround.jpg"),
+        Image photo = new Image(getClass().getResourceAsStream("/photos/backround.jpg"),
                 2.5 * WIDTH, 2.5 *  HEIGHT, false, false);
         ImageView image = new ImageView(photo);
         image.getTransforms().add(new Translate(-photo.getWidth()/2, -photo.getHeight()/2, 800));

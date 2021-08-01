@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Material;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Cylinder;
+import javafx.stage.Stage;
 
 /**
  * The Game board that holds the pieces.
@@ -33,10 +34,10 @@ public class Board implements CONNECT_CONSTANTS {
         }
     }
 
-    public Board(Group g) {
+    public Board(Stage stage, Group board, Group piece) {
         CONNECT_BOARD = new Plane[HEIGHT + 1];
         for (int i = 0; i <= HEIGHT; i++) {
-            CONNECT_BOARD[i] = new Plane(g, i);
+            CONNECT_BOARD[i] = new Plane(stage, board, piece, i);
         }
     }
 
