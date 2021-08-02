@@ -73,7 +73,7 @@ public class Board implements CONNECT_CONSTANTS {
      * @return true if the given row and column pos isn't
      * filled.
      */
-    public boolean isSquareAvailable(int row, int col) {
+    public static boolean isSquareAvailable(int row, int col) {
         for (Plane p : CONNECT_BOARD) {
             if (p.getSquare(row, col).isEmpty()) {
                 return true;
@@ -148,7 +148,7 @@ public class Board implements CONNECT_CONSTANTS {
      * @param col        desired col index to add piece
      * @return true if the piece add leads to a connect four.
      */
-    public boolean addUserPiece(boolean addedPiece, int row, int col) {
+    public static boolean addUserPiece(boolean addedPiece, int row, int col) {
         if (!isSquareAvailable(row, col)) {
             throw new IllegalStateException("Square already taken.");
         }
@@ -172,7 +172,7 @@ public class Board implements CONNECT_CONSTANTS {
      * @param Player the player who made the prev move
      * @return true if the previous move created a connect 4.
      */
-    public boolean isGameDone(int row, int col, int height, boolean Player) {
+    public static boolean isGameDone(int row, int col, int height, boolean Player) {
         // checks both the 2-D plane and the valid diagonals in 3-D space
         return CONNECT_BOARD[height].isGameDone(Player) ||
                 checkMultiDimensions(row, col, height, Player);
@@ -190,7 +190,7 @@ public class Board implements CONNECT_CONSTANTS {
      *               connect four.
      * @return true if the previous move created a connect 4.
      */
-    public boolean isGameDone(boolean Player) {
+    public static boolean isGameDone(boolean Player) {
         for (int i = 0; i < CONNECT_BOARD.length; i++) {
             // iterates through all squares in plane (25)
             for (int r = 0; r < PLANE_SIZE; r++) {
@@ -229,7 +229,7 @@ public class Board implements CONNECT_CONSTANTS {
      * @param player desired piece type when looking for winner
      * @return true if there is a connection of for in 3-D space.
      */
-    private boolean checkMultiDimensions(int row, int col, int height, boolean player) {
+    private static boolean checkMultiDimensions(int row, int col, int height, boolean player) {
         // contains all valid search paths for a given point (x, y, z)
         SearchLookUpTable validPaths = new SearchLookUpTable(row, col, height);
         Iterator<Direction> paths = validPaths.iterator();
@@ -262,7 +262,7 @@ public class Board implements CONNECT_CONSTANTS {
      * @param depth  How many in a row needed to win.
      * @return an int for every similar piece connected to the last piece placed.
      */
-    private int inARow(int row, int col, int height, boolean player, Direction path, int depth) {
+    private static int inARow(int row, int col, int height, boolean player, Direction path, int depth) {
         // base case: piece goes out of bounds
         if (row < 0 || col < 0 || height < 0 || row >= PLANE_SIZE || col >= PLANE_SIZE
                 || height > HEIGHT) {

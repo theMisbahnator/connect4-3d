@@ -19,7 +19,9 @@ public class mainGame extends Application implements CONNECT_CONSTANTS {
         Group boardGroup = new Group();
         Group pieceGroup = new Group();
         Group allGroups = new Group();
-        allGroups.getChildren().addAll(prepareBackground(), boardGroup, pieceGroup);
+        Group rotatableGroups = new Group();
+        rotatableGroups.getChildren().addAll(boardGroup, pieceGroup);
+        allGroups.getChildren().addAll(prepareBackground(), rotatableGroups);
 
         /*
         ways to place peices in 3-D space
@@ -31,19 +33,20 @@ public class mainGame extends Application implements CONNECT_CONSTANTS {
 
         // background
         PerspectiveCamera camera = new PerspectiveCamera();
-        Scene scene = new Scene(allGroups, WIDTH, HEIGHT);
+        Scene scene = new Scene(allGroups, WIDTH, HEIGHT, true);
         scene.setFill(Color.BLACK);
         scene.setCamera(camera);
 
         b.addUserPiece(true, 0, 0);
         b.addUserPiece(false, 1,1);
+        b.addUserPiece(true, 1, 1);
 
 
         camera.setVerticalFieldOfView(false);
 
-        camera.translateXProperty().set(-700);
-        camera.translateYProperty().set(-400);
-        camera.translateZProperty().set(-1500);
+        camera.translateXProperty().set(-450);
+        camera.translateYProperty().set(-300);
+        camera.translateZProperty().set(-1200);
 
         // camera.setFieldOfView(30);
         camera.setNearClip(1);
@@ -64,10 +67,8 @@ public class mainGame extends Application implements CONNECT_CONSTANTS {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        zoomFunction(primaryStage, boardGroup);
-        zoomFunction(primaryStage, pieceGroup);
-        angleBoard(primaryStage, boardGroup);
-        angleBoard(primaryStage, pieceGroup);
+        zoomFunction(primaryStage, rotatableGroups);
+        angleBoard(primaryStage, rotatableGroups);
 //
 //        final PerspectiveCamera camera = new PerspectiveCamera(true);
 

@@ -50,11 +50,12 @@ public class Piece extends Square {
         } else {
             material.setDiffuseMap(new Image(getClass().getResourceAsStream("/photos/blue.jpg")));
         }
+        isEmpty = false;
         piece.setMaterial(material);
         group.getChildren().add(piece);
         piece.translateXProperty().set(x * 140);
         piece.translateYProperty().set(y * 140);
-        piece.translateZProperty().set(30);
+        piece.translateZProperty().set(30 * height + 10);
         piece.rotationAxisProperty().set(new Point3D(1,0,0));
         piece.rotateProperty().set(90);
     }
