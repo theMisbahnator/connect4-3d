@@ -12,6 +12,7 @@ public class Piece extends Square {
     private boolean isEmpty;
     private Group group;
     private int height;
+    private Cylinder piece;
     private int x;
     private int y;
 
@@ -56,6 +57,10 @@ public class Piece extends Square {
         piece.translateZProperty().set(30);
         piece.rotationAxisProperty().set(new Point3D(1,0,0));
         piece.rotateProperty().set(90);
+    }
+
+    public void actions() {
+
     }
 
     public boolean isEmpty() {

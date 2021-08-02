@@ -32,7 +32,7 @@ public class Plane implements CONNECT_CONSTANTS{
         for (int i = 0; i < PLANE_SIZE; i++) {
             for (int j = 0; j < PLANE_SIZE; j++) {
                 if(height == 0) {
-                    BoardSquare sqr = new BoardSquare(stage, board, i, j);
+                    BoardSquare sqr = new BoardSquare(stage, board, piece, i, j);
                 }
                 boardPlane[i][j] = new Piece(piece, height, j, i);
             }

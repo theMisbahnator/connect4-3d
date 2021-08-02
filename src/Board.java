@@ -21,7 +21,7 @@ import javafx.stage.Stage;
  */
 public class Board implements CONNECT_CONSTANTS {
 
-    private Plane[] CONNECT_BOARD;
+    private static Plane[] CONNECT_BOARD;
 
     /**
      * Instantiates a plane for every layer in the
@@ -125,7 +125,7 @@ public class Board implements CONNECT_CONSTANTS {
      * @return a int indicating the height of the
      * top most piece within the desired spot.
      */
-    public int getOpenSquareHeight(int row, int col) {
+    public static int getOpenSquareHeight(int row, int col) {
         int height = 0;
         for (Plane e : CONNECT_BOARD) {
             if (e.getSquare(row, col).isEmpty()) {

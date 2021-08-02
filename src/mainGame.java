@@ -1,27 +1,14 @@
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
+import javafx.event.EventType;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.Cylinder;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Sphere;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
-
-import java.util.Scanner;
-
-import static java.awt.image.ImageObserver.WIDTH;
 
 public class mainGame extends Application implements CONNECT_CONSTANTS {
 
@@ -79,8 +66,8 @@ public class mainGame extends Application implements CONNECT_CONSTANTS {
 
         zoomFunction(primaryStage, boardGroup);
         zoomFunction(primaryStage, pieceGroup);
-        rotateBoard(primaryStage, boardGroup);
-        rotateBoard(primaryStage, pieceGroup);
+        angleBoard(primaryStage, boardGroup);
+        angleBoard(primaryStage, pieceGroup);
 //
 //        final PerspectiveCamera camera = new PerspectiveCamera(true);
 
@@ -94,7 +81,7 @@ public class mainGame extends Application implements CONNECT_CONSTANTS {
         });
     }
 
-    public void rotateBoard(Stage stage, Group group) {
+    public void angleBoard(Stage stage, Group group) {
         // sets base rotation
         group.rotationAxisProperty().set(new Point3D(1,0,0));
         group.rotateProperty().set(140);
@@ -109,6 +96,17 @@ public class mainGame extends Application implements CONNECT_CONSTANTS {
             double mouseXMovement = event.getX();
             group.rotationAxisProperty().set(new Point3D(1,0,0));
             group.rotateProperty().set(-mouseXMovement);
+        });
+    }
+
+    public void rotateBoard(Stage stage, Group group) {
+        int start = 0;
+        stage.addEventHandler(MouseEvent.MOUSE_PRESSED, clicked -> {
+
+        });
+
+        stage.addEventHandler(MouseEvent.MOUSE_RELEASED, clicked -> {
+
         });
     }
 
