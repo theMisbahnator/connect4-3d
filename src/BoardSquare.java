@@ -42,6 +42,10 @@ public class BoardSquare {
         actions();
     }
 
+    public Box getBox() {
+        return square;
+    }
+
     public void setMaterial (String file_path, Box box) {
         PhongMaterial material = new PhongMaterial();
         material.setDiffuseMap(new Image(getClass().getResourceAsStream(file_path)));
@@ -69,7 +73,12 @@ public class BoardSquare {
         square.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                Board.addUserPiece(true, row, col);
+                System.out.println("x: " + row + ", col: " + col);
+                int height = Board.getOpenSquareHeight(row, col);
+                Board.addUserPiece(Board.getTurn(), row, col);
+                System.out.println(Board.isGameDone(row, col, height, Board.getTurn()));
+                Board.changeTurn();
+
             }
         });
     }

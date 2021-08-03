@@ -11,6 +11,7 @@ import javafx.scene.paint.Material;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Cylinder;
 import javafx.stage.Stage;
+import jdk.jfr.Frequency;
 
 /**
  * The Game board that holds the pieces.
@@ -22,6 +23,8 @@ import javafx.stage.Stage;
 public class Board implements CONNECT_CONSTANTS {
 
     private static Plane[] CONNECT_BOARD;
+    private static BoardSquare[][] GUI_BOARD;
+    private static boolean turn;
 
     /**
      * Instantiates a plane for every layer in the
@@ -39,6 +42,20 @@ public class Board implements CONNECT_CONSTANTS {
         for (int i = 0; i <= HEIGHT; i++) {
             CONNECT_BOARD[i] = new Plane(stage, board, piece, i);
         }
+        createGUIBoard(stage, board, piece);
+    }
+
+    private void createGUIBoard(Stage stage, Group board, Group piece) {
+        GUI_BOARD = new BoardSquare[PLANE_SIZE][PLANE_SIZE];
+        for (int row = 0; row < PLANE_SIZE; row++) {
+            for (int col = 0; col < PLANE_SIZE; col++) {
+                GUI_BOARD[row][col] = new BoardSquare(stage, board, piece, row, col);
+            }
+        }
+    }
+
+    public static BoardSquare getBoardSquare(int row, int col) {
+        return GUI_BOARD[row][col];
     }
 
     /**
@@ -62,6 +79,14 @@ public class Board implements CONNECT_CONSTANTS {
         CONNECT_BOARD[1] = new Plane(layer1);
         CONNECT_BOARD[2] = new Plane(layer2);
         CONNECT_BOARD[3] = new Plane(layer3);
+    }
+
+    public static boolean getTurn () {
+        return turn;
+    }
+
+    public static void changeTurn() {
+        turn = !turn;
     }
 
     /**

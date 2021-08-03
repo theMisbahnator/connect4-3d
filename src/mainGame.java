@@ -37,10 +37,6 @@ public class mainGame extends Application implements CONNECT_CONSTANTS {
         scene.setFill(Color.BLACK);
         scene.setCamera(camera);
 
-        b.addUserPiece(true, 0, 0);
-        b.addUserPiece(false, 1,1);
-        b.addUserPiece(true, 1, 1);
-
 
         camera.setVerticalFieldOfView(false);
 
@@ -84,7 +80,7 @@ public class mainGame extends Application implements CONNECT_CONSTANTS {
 
     public void angleBoard(Stage stage, Group group) {
         // sets base rotation
-        group.rotationAxisProperty().set(new Point3D(1,0,0));
+        group.rotationAxisProperty().set(new Point3D(1, 0, 0));
         group.rotateProperty().set(140);
 
         stage.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
@@ -95,7 +91,7 @@ public class mainGame extends Application implements CONNECT_CONSTANTS {
         stage.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
             double mouseYMovement = event.getY();
             double mouseXMovement = event.getX();
-            group.rotationAxisProperty().set(new Point3D(1,0,0));
+            group.rotationAxisProperty().set(new Point3D(1, 0, 0));
             group.rotateProperty().set(-mouseXMovement);
         });
     }
@@ -111,11 +107,11 @@ public class mainGame extends Application implements CONNECT_CONSTANTS {
         });
     }
 
-    public ImageView prepareBackground () {
+    public ImageView prepareBackground() {
         Image photo = new Image(getClass().getResourceAsStream("/photos/backround.jpg"),
-                2.5 * WIDTH, 2.5 *  HEIGHT, false, false);
+                2.5 * WIDTH, 2.5 * HEIGHT, false, false);
         ImageView image = new ImageView(photo);
-        image.getTransforms().add(new Translate(-photo.getWidth()/2, -photo.getHeight()/2, 800));
+        image.getTransforms().add(new Translate(-photo.getWidth() / 2, -photo.getHeight() / 2, 800));
         return image;
     }
 
